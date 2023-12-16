@@ -1,0 +1,121 @@
+[gd_scene load_steps=8 format=3 uid="uid://crpofq5lovbhw"]
+
+[ext_resource type="Script" path="res://animated_cutscene.gd" id="1_o4eii"]
+
+[sub_resource type="TorusMesh" id="TorusMesh_qwjk7"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_h065r"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_juxh3"]
+albedo_color = Color(1, 0.431373, 1, 1)
+
+[sub_resource type="Animation" id="Animation_xa7x3"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TorusMeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TorusMeshInstance3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TorusMeshInstance3D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_l4u7a"]
+resource_name = "animation_example"
+length = 5.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("TorusMeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 3, 3.7, 4.3, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(-1.49987, 0, -1.44655), Vector3(-3.9472, -1.15989, -2.33358), Vector3(-3.70337, -0.624555, -0.250548), Vector3(0, 0, -1.447)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("TorusMeshInstance3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2, 3.7, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0.785398, 0.785398, 0.785398), Vector3(1.5708, 4.71239, 3.14159), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("TorusMeshInstance3D:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1, 2, 5),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(2, 2, 2), Vector3(1, 1, 1), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6tuw8"]
+_data = {
+"RESET": SubResource("Animation_xa7x3"),
+"animation_example": SubResource("Animation_l4u7a")
+}
+
+[node name="AnimatedCutscene" type="Node3D"]
+script = ExtResource("1_o4eii")
+scene_name = "res://end_scene.tscn"
+
+[node name="TorusMeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("TorusMesh_qwjk7")
+
+[node name="SphereMeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+mesh = SubResource("SphereMesh_h065r")
+
+[node name="SphereMeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 0)
+mesh = SubResource("SphereMesh_h065r")
+surface_material_override/0 = SubResource("StandardMaterial3D_juxh3")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.965926, -0.258819, 0, 0.258819, 0.965926, 0, 1, 5)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6tuw8")
+}
+
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
